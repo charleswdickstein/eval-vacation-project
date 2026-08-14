@@ -18,6 +18,7 @@ def test_notebook_runs_the_real_pipeline_before_the_offline_control() -> None:
     assert "from inspect_ai import eval_async" in source
     assert "property_content_eval()" in source
     assert 'log_dir=str(NOTEBOOK_LOG_DIR)' in source
+    assert 'display="none"' not in source
     assert "score.metadata[\"generation_result\"][\"content\"]" in source
     assert "semantic_grounding" in source
     assert source.index("await eval_async") < source.index("await build_offline_summary")
