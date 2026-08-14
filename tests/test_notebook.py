@@ -21,6 +21,10 @@ def test_notebook_runs_the_real_pipeline_before_the_offline_control() -> None:
     assert 'display="none"' not in source
     assert "score.metadata[\"generation_result\"][\"content\"]" in source
     assert "semantic_grounding" in source
+    assert "def display_result" in source
+    assert 'display_result(result["semantic_grounding"]' in source
+    assert 'display_result(result["editorial_quality"]' in source
+    assert 'JSON(data=result["semantic_grounding"]' not in source
     assert source.index("await eval_async") < source.index("await build_offline_summary")
     assert "read_eval_log" not in source
 
