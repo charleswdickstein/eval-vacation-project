@@ -4,14 +4,14 @@ This project converts raw vacation-rental data into four required marketing outp
 
 ## Reviewer quick start
 
-No API key or new model call is needed to review the committed submission report:
+No API key or new model call is needed to review the most recent committed evaluation run:
 
 ```bash
 uv sync --locked
 open artifacts/live-report.html
 ```
 
-`artifacts/live-report.html` is a static snapshot of the selected committed run; opening it does not search for the latest local run. The report presents all four test properties in the order **raw input → ingestion / cleaning → generation → evaluation**.
+`artifacts/live-report.html` is the readable snapshot of the newest run committed under `logs/final`. The report presents all four test properties in the order **raw input → ingestion / cleaning → generation → evaluation**. Opening it does not search uncommitted experiments under `logs/main`.
 
 To inspect the underlying model calls and scores:
 
