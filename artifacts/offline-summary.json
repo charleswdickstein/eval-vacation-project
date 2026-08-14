@@ -1,0 +1,652 @@
+{
+  "run_type": "offline_control",
+  "uses_llm": false,
+  "description": "Network-free pipeline verification using fixture-authored extraction candidates, a deterministic listing generator, and a calibrated fake semantic grader.",
+  "samples": [
+    {
+      "case_id": "description_rich",
+      "holdout": false,
+      "fact_count": 32,
+      "claimable_fact_count": 22,
+      "warnings": [],
+      "conflicts": [],
+      "output": {
+        "hero_headline": "Loft stay at Casa Llum in Barcelona",
+        "property_highlights": [
+          "A Loft located in Barcelona, Spain.",
+          "Space for up to 4 guests across 2 bedrooms.",
+          "The property provides 1.5 bathrooms."
+        ],
+        "about_this_place": "Casa Llum is a Loft in Barcelona, Spain, with space for as many as 4 guests. Its layout includes 2 bedrooms and 1.5 bathrooms, giving guests the core details needed to plan their stay. The stated arrival and departure schedule is check-in at 3 PM and check-out at 11 AM, giving guests the supplied times for planning both ends of the stay.",
+        "amenities_descriptions": [
+          {
+            "amenity_code": "AirConditioning",
+            "text": "The property includes Air conditioning."
+          },
+          {
+            "amenity_code": "DishWasher",
+            "text": "The property includes Dishwasher."
+          },
+          {
+            "amenity_code": "InternetBroadband",
+            "text": "The property includes High-speed internet."
+          }
+        ]
+      },
+      "grounded_output": {
+        "hero_headline": {
+          "text": "Loft stay at Casa Llum in Barcelona",
+          "fact_ids": [
+            "property.type",
+            "property.name",
+            "location.city"
+          ]
+        },
+        "property_highlights": [
+          {
+            "text": "A Loft located in Barcelona, Spain.",
+            "fact_ids": [
+              "property.type",
+              "location.city",
+              "location.country"
+            ]
+          },
+          {
+            "text": "Space for up to 4 guests across 2 bedrooms.",
+            "fact_ids": [
+              "rental.max_guests",
+              "rental.bedrooms"
+            ]
+          },
+          {
+            "text": "The property provides 1.5 bathrooms.",
+            "fact_ids": [
+              "rental.bathrooms"
+            ]
+          }
+        ],
+        "about_this_place": [
+          {
+            "text": "Casa Llum is a Loft in Barcelona, Spain, with space for as many as 4 guests.",
+            "fact_ids": [
+              "property.name",
+              "property.type",
+              "location.city",
+              "location.country",
+              "rental.max_guests"
+            ]
+          },
+          {
+            "text": "Its layout includes 2 bedrooms and 1.5 bathrooms, giving guests the core details needed to plan their stay.",
+            "fact_ids": [
+              "rental.bedrooms",
+              "rental.bathrooms"
+            ]
+          },
+          {
+            "text": "The stated arrival and departure schedule is check-in at 3 PM and check-out at 11 AM, giving guests the supplied times for planning both ends of the stay.",
+            "fact_ids": [
+              "house_rules.check_in",
+              "house_rules.check_out"
+            ]
+          }
+        ],
+        "amenities_descriptions": [
+          {
+            "text": "The property includes Air conditioning.",
+            "fact_ids": [
+              "amenity.airconditioning"
+            ],
+            "amenity_code": "AirConditioning"
+          },
+          {
+            "text": "The property includes Dishwasher.",
+            "fact_ids": [
+              "amenity.dishwasher"
+            ],
+            "amenity_code": "DishWasher"
+          },
+          {
+            "text": "The property includes High-speed internet.",
+            "fact_ids": [
+              "amenity.internetbroadband"
+            ],
+            "amenity_code": "InternetBroadband"
+          }
+        ]
+      },
+      "checks": {
+        "schema_valid": {
+          "passed": true,
+          "explanation": "Output parsed as ListingContent and contains all four required fields.",
+          "details": {}
+        },
+        "structure_valid": {
+          "passed": true,
+          "explanation": "All four output fields meet declared count and length rules.",
+          "details": {
+            "failures": []
+          }
+        },
+        "citation_valid": {
+          "passed": true,
+          "explanation": "Every statement cites only active facts permitted for generated copy.",
+          "details": {
+            "failures": []
+          }
+        },
+        "numeric_consistency": {
+          "passed": true,
+          "explanation": "Every numeric claim appears in at least one cited fact.",
+          "details": {
+            "failures": []
+          }
+        },
+        "conflict_free": {
+          "passed": true,
+          "explanation": "No statement cites a conflicted, excluded, or internal-only fact.",
+          "details": {
+            "failures": []
+          }
+        },
+        "non_repetitive": {
+          "passed": false,
+          "explanation": "Detected repetition that should be reviewed as an editorial-quality issue.",
+          "details": {
+            "duplicate_text": [],
+            "facts_used_in_more_than_two_sections": {
+              "property.type": [
+                "about_this_place",
+                "hero_headline",
+                "property_highlights"
+              ],
+              "location.city": [
+                "about_this_place",
+                "hero_headline",
+                "property_highlights"
+              ]
+            },
+            "similar_pairs": []
+          }
+        }
+      },
+      "mandatory_criteria_passed": true,
+      "description_fact_support_rate": 1.0,
+      "grounded_statement_rate": 1.0
+    },
+    {
+      "case_id": "sparse",
+      "holdout": false,
+      "fact_count": 24,
+      "claimable_fact_count": 13,
+      "warnings": [],
+      "conflicts": [],
+      "output": {
+        "hero_headline": "Studio stay at Estudio Caleta in Cádiz",
+        "property_highlights": [
+          "A Studio located in Cádiz, Spain.",
+          "Space for up to 2 guests across 0 bedrooms.",
+          "The property provides 1 bathrooms."
+        ],
+        "about_this_place": "Estudio Caleta is a Studio in Cádiz, Spain, with space for as many as 2 guests. Its layout includes 0 bedrooms and 1 bathrooms, giving guests the core details needed to plan their stay. The stated arrival and departure schedule is check-in at 4 PM and check-out at 10 AM, giving guests the supplied times for planning both ends of the stay.",
+        "amenities_descriptions": []
+      },
+      "grounded_output": {
+        "hero_headline": {
+          "text": "Studio stay at Estudio Caleta in Cádiz",
+          "fact_ids": [
+            "property.type",
+            "property.name",
+            "location.city"
+          ]
+        },
+        "property_highlights": [
+          {
+            "text": "A Studio located in Cádiz, Spain.",
+            "fact_ids": [
+              "property.type",
+              "location.city",
+              "location.country"
+            ]
+          },
+          {
+            "text": "Space for up to 2 guests across 0 bedrooms.",
+            "fact_ids": [
+              "rental.max_guests",
+              "rental.bedrooms"
+            ]
+          },
+          {
+            "text": "The property provides 1 bathrooms.",
+            "fact_ids": [
+              "rental.bathrooms"
+            ]
+          }
+        ],
+        "about_this_place": [
+          {
+            "text": "Estudio Caleta is a Studio in Cádiz, Spain, with space for as many as 2 guests.",
+            "fact_ids": [
+              "property.name",
+              "property.type",
+              "location.city",
+              "location.country",
+              "rental.max_guests"
+            ]
+          },
+          {
+            "text": "Its layout includes 0 bedrooms and 1 bathrooms, giving guests the core details needed to plan their stay.",
+            "fact_ids": [
+              "rental.bedrooms",
+              "rental.bathrooms"
+            ]
+          },
+          {
+            "text": "The stated arrival and departure schedule is check-in at 4 PM and check-out at 10 AM, giving guests the supplied times for planning both ends of the stay.",
+            "fact_ids": [
+              "house_rules.check_in",
+              "house_rules.check_out"
+            ]
+          }
+        ],
+        "amenities_descriptions": []
+      },
+      "checks": {
+        "schema_valid": {
+          "passed": true,
+          "explanation": "Output parsed as ListingContent and contains all four required fields.",
+          "details": {}
+        },
+        "structure_valid": {
+          "passed": true,
+          "explanation": "All four output fields meet declared count and length rules.",
+          "details": {
+            "failures": []
+          }
+        },
+        "citation_valid": {
+          "passed": true,
+          "explanation": "Every statement cites only active facts permitted for generated copy.",
+          "details": {
+            "failures": []
+          }
+        },
+        "numeric_consistency": {
+          "passed": true,
+          "explanation": "Every numeric claim appears in at least one cited fact.",
+          "details": {
+            "failures": []
+          }
+        },
+        "conflict_free": {
+          "passed": true,
+          "explanation": "No statement cites a conflicted, excluded, or internal-only fact.",
+          "details": {
+            "failures": []
+          }
+        },
+        "non_repetitive": {
+          "passed": false,
+          "explanation": "Detected repetition that should be reviewed as an editorial-quality issue.",
+          "details": {
+            "duplicate_text": [],
+            "facts_used_in_more_than_two_sections": {
+              "property.type": [
+                "about_this_place",
+                "hero_headline",
+                "property_highlights"
+              ],
+              "location.city": [
+                "about_this_place",
+                "hero_headline",
+                "property_highlights"
+              ]
+            },
+            "similar_pairs": []
+          }
+        }
+      },
+      "mandatory_criteria_passed": true,
+      "description_fact_support_rate": 1.0,
+      "grounded_statement_rate": 1.0
+    },
+    {
+      "case_id": "conflicting_capacity",
+      "holdout": false,
+      "fact_count": 30,
+      "claimable_fact_count": 19,
+      "warnings": [],
+      "conflicts": [
+        {
+          "fact_id": "description.fact.a4effa1e60dc",
+          "authoritative_fact_id": "rental.max_guests",
+          "reason": "Description value 8 conflicts with structured value 6."
+        }
+      ],
+      "output": {
+        "hero_headline": "Villa stay at Villa Pinar in Pollença",
+        "property_highlights": [
+          "A Villa located in Pollença, Spain.",
+          "Space for up to 6 guests across 3 bedrooms.",
+          "The property provides 2 bathrooms."
+        ],
+        "about_this_place": "Villa Pinar is a Villa in Pollença, Spain, with space for as many as 6 guests. Its layout includes 3 bedrooms and 2 bathrooms, giving guests the core details needed to plan their stay. The stated arrival and departure schedule is check-in at 3 PM and check-out at 10 AM, giving guests the supplied times for planning both ends of the stay.",
+        "amenities_descriptions": [
+          {
+            "amenity_code": "KitchenAndDining",
+            "text": "The property includes Kitchen and dining facilities."
+          },
+          {
+            "amenity_code": "Parking",
+            "text": "The property includes Parking."
+          },
+          {
+            "amenity_code": "Pool",
+            "text": "The property includes Swimming pool."
+          }
+        ]
+      },
+      "grounded_output": {
+        "hero_headline": {
+          "text": "Villa stay at Villa Pinar in Pollença",
+          "fact_ids": [
+            "property.type",
+            "property.name",
+            "location.city"
+          ]
+        },
+        "property_highlights": [
+          {
+            "text": "A Villa located in Pollença, Spain.",
+            "fact_ids": [
+              "property.type",
+              "location.city",
+              "location.country"
+            ]
+          },
+          {
+            "text": "Space for up to 6 guests across 3 bedrooms.",
+            "fact_ids": [
+              "rental.max_guests",
+              "rental.bedrooms"
+            ]
+          },
+          {
+            "text": "The property provides 2 bathrooms.",
+            "fact_ids": [
+              "rental.bathrooms"
+            ]
+          }
+        ],
+        "about_this_place": [
+          {
+            "text": "Villa Pinar is a Villa in Pollença, Spain, with space for as many as 6 guests.",
+            "fact_ids": [
+              "property.name",
+              "property.type",
+              "location.city",
+              "location.country",
+              "rental.max_guests"
+            ]
+          },
+          {
+            "text": "Its layout includes 3 bedrooms and 2 bathrooms, giving guests the core details needed to plan their stay.",
+            "fact_ids": [
+              "rental.bedrooms",
+              "rental.bathrooms"
+            ]
+          },
+          {
+            "text": "The stated arrival and departure schedule is check-in at 3 PM and check-out at 10 AM, giving guests the supplied times for planning both ends of the stay.",
+            "fact_ids": [
+              "house_rules.check_in",
+              "house_rules.check_out"
+            ]
+          }
+        ],
+        "amenities_descriptions": [
+          {
+            "text": "The property includes Kitchen and dining facilities.",
+            "fact_ids": [
+              "amenity.kitchenanddining"
+            ],
+            "amenity_code": "KitchenAndDining"
+          },
+          {
+            "text": "The property includes Parking.",
+            "fact_ids": [
+              "amenity.parking"
+            ],
+            "amenity_code": "Parking"
+          },
+          {
+            "text": "The property includes Swimming pool.",
+            "fact_ids": [
+              "amenity.pool"
+            ],
+            "amenity_code": "Pool"
+          }
+        ]
+      },
+      "checks": {
+        "schema_valid": {
+          "passed": true,
+          "explanation": "Output parsed as ListingContent and contains all four required fields.",
+          "details": {}
+        },
+        "structure_valid": {
+          "passed": true,
+          "explanation": "All four output fields meet declared count and length rules.",
+          "details": {
+            "failures": []
+          }
+        },
+        "citation_valid": {
+          "passed": true,
+          "explanation": "Every statement cites only active facts permitted for generated copy.",
+          "details": {
+            "failures": []
+          }
+        },
+        "numeric_consistency": {
+          "passed": true,
+          "explanation": "Every numeric claim appears in at least one cited fact.",
+          "details": {
+            "failures": []
+          }
+        },
+        "conflict_free": {
+          "passed": true,
+          "explanation": "No statement cites a conflicted, excluded, or internal-only fact.",
+          "details": {
+            "failures": []
+          }
+        },
+        "non_repetitive": {
+          "passed": false,
+          "explanation": "Detected repetition that should be reviewed as an editorial-quality issue.",
+          "details": {
+            "duplicate_text": [],
+            "facts_used_in_more_than_two_sections": {
+              "property.type": [
+                "about_this_place",
+                "hero_headline",
+                "property_highlights"
+              ],
+              "location.city": [
+                "about_this_place",
+                "hero_headline",
+                "property_highlights"
+              ]
+            },
+            "similar_pairs": []
+          }
+        }
+      },
+      "mandatory_criteria_passed": true,
+      "description_fact_support_rate": 1.0,
+      "grounded_statement_rate": 1.0
+    },
+    {
+      "case_id": "adversarial_holdout",
+      "holdout": true,
+      "fact_count": 28,
+      "claimable_fact_count": 17,
+      "warnings": [
+        {
+          "code": "unknown_amenity",
+          "source_path": "amenities[1]",
+          "message": "Amenity code 'SuperFastTeleport' was retained but not interpreted."
+        }
+      ],
+      "conflicts": [],
+      "output": {
+        "hero_headline": "Cottage stay at Cottage Verd in Sóller",
+        "property_highlights": [
+          "A Cottage located in Sóller, Spain.",
+          "Space for up to 4 guests across 2 bedrooms.",
+          "The property provides 1 bathrooms."
+        ],
+        "about_this_place": "Cottage Verd is a Cottage in Sóller, Spain, with space for as many as 4 guests. Its layout includes 2 bedrooms and 1 bathrooms, giving guests the core details needed to plan their stay. The stated arrival and departure schedule is check-in at 4 PM and check-out at 11 AM, giving guests the supplied times for planning both ends of the stay.",
+        "amenities_descriptions": [
+          {
+            "amenity_code": "KitchenAndDining",
+            "text": "The property includes Kitchen and dining facilities."
+          }
+        ]
+      },
+      "grounded_output": {
+        "hero_headline": {
+          "text": "Cottage stay at Cottage Verd in Sóller",
+          "fact_ids": [
+            "property.type",
+            "property.name",
+            "location.city"
+          ]
+        },
+        "property_highlights": [
+          {
+            "text": "A Cottage located in Sóller, Spain.",
+            "fact_ids": [
+              "property.type",
+              "location.city",
+              "location.country"
+            ]
+          },
+          {
+            "text": "Space for up to 4 guests across 2 bedrooms.",
+            "fact_ids": [
+              "rental.max_guests",
+              "rental.bedrooms"
+            ]
+          },
+          {
+            "text": "The property provides 1 bathrooms.",
+            "fact_ids": [
+              "rental.bathrooms"
+            ]
+          }
+        ],
+        "about_this_place": [
+          {
+            "text": "Cottage Verd is a Cottage in Sóller, Spain, with space for as many as 4 guests.",
+            "fact_ids": [
+              "property.name",
+              "property.type",
+              "location.city",
+              "location.country",
+              "rental.max_guests"
+            ]
+          },
+          {
+            "text": "Its layout includes 2 bedrooms and 1 bathrooms, giving guests the core details needed to plan their stay.",
+            "fact_ids": [
+              "rental.bedrooms",
+              "rental.bathrooms"
+            ]
+          },
+          {
+            "text": "The stated arrival and departure schedule is check-in at 4 PM and check-out at 11 AM, giving guests the supplied times for planning both ends of the stay.",
+            "fact_ids": [
+              "house_rules.check_in",
+              "house_rules.check_out"
+            ]
+          }
+        ],
+        "amenities_descriptions": [
+          {
+            "text": "The property includes Kitchen and dining facilities.",
+            "fact_ids": [
+              "amenity.kitchenanddining"
+            ],
+            "amenity_code": "KitchenAndDining"
+          }
+        ]
+      },
+      "checks": {
+        "schema_valid": {
+          "passed": true,
+          "explanation": "Output parsed as ListingContent and contains all four required fields.",
+          "details": {}
+        },
+        "structure_valid": {
+          "passed": true,
+          "explanation": "All four output fields meet declared count and length rules.",
+          "details": {
+            "failures": []
+          }
+        },
+        "citation_valid": {
+          "passed": true,
+          "explanation": "Every statement cites only active facts permitted for generated copy.",
+          "details": {
+            "failures": []
+          }
+        },
+        "numeric_consistency": {
+          "passed": true,
+          "explanation": "Every numeric claim appears in at least one cited fact.",
+          "details": {
+            "failures": []
+          }
+        },
+        "conflict_free": {
+          "passed": true,
+          "explanation": "No statement cites a conflicted, excluded, or internal-only fact.",
+          "details": {
+            "failures": []
+          }
+        },
+        "non_repetitive": {
+          "passed": false,
+          "explanation": "Detected repetition that should be reviewed as an editorial-quality issue.",
+          "details": {
+            "duplicate_text": [],
+            "facts_used_in_more_than_two_sections": {
+              "property.type": [
+                "about_this_place",
+                "hero_headline",
+                "property_highlights"
+              ],
+              "location.city": [
+                "about_this_place",
+                "hero_headline",
+                "property_highlights"
+              ]
+            },
+            "similar_pairs": []
+          }
+        }
+      },
+      "mandatory_criteria_passed": true,
+      "description_fact_support_rate": 1.0,
+      "grounded_statement_rate": 1.0
+    }
+  ],
+  "aggregate": {
+    "fixture_count": 4,
+    "mandatory_pass_count": 4,
+    "minimum_grounded_statement_rate": 1.0,
+    "minimum_description_fact_support_rate": 1.0
+  }
+}

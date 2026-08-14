@@ -1,0 +1,18 @@
+[
+  {
+    "case_id": "correct_specific_grounded",
+    "expected": "all_grounding_gates_pass"
+  },
+  {
+    "case_id": "correct_but_generic",
+    "expected": "grounding_passes_editorial_specificity_fails"
+  },
+  {
+    "case_id": "wrong_guest_capacity",
+    "expected": "numeric_consistency_fails"
+  },
+  {
+    "case_id": "invented_pool_or_distance",
+    "expected": "semantic_grounding_fails"
+  }
+]

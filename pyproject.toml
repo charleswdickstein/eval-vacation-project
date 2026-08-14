@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=80"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lodgify-property-content"
+version = "0.1.0"
+description = "Evaluation-first grounded marketing copy generation for vacation rentals"
+readme = "README.md"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "anthropic>=0.69,<1",
+    "inspect-ai>=0.3.159,<1",
+    "pydantic>=2.11,<3",
+]
+
+[dependency-groups]
+dev = [
+    "jupyterlab>=4.4,<5",
+    "pytest>=8.3,<10",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+pythonpath = ["."]
+testpaths = ["tests"]

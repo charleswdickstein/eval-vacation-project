@@ -1,0 +1,19 @@
+.DS_Store
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+.ipynb_checkpoints/
+dist/
+build/
+logs/main/
+logs/.DS_Store
+
+*.egg-info/
+
+# Private assignment materials and internal planning documents
+AI Engineer - Technical Assignment*.html
+IMPLEMENTATION_PLAN.md
+ai-engineer-evaluation-plan.html
