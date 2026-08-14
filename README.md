@@ -4,14 +4,14 @@ This project converts raw vacation-rental data into four required marketing outp
 
 ## Reviewer quick start
 
-No API key or new model call is needed to review the submitted result:
+No API key or new model call is needed to review the committed submission report:
 
 ```bash
 uv sync --locked
 open artifacts/live-report.html
 ```
 
-The report presents all four test properties in the order **raw input → ingestion / cleaning → generation → evaluation**. It is rendered from the committed Inspect AI log.
+`artifacts/live-report.html` is a static snapshot of the selected committed run; opening it does not search for the latest local run. The report presents all four test properties in the order **raw input → ingestion / cleaning → generation → evaluation**.
 
 To inspect the underlying model calls and scores:
 
@@ -202,23 +202,44 @@ When finished, remove the key from the shell session:
 unset ANTHROPIC_API_KEY
 ```
 
-Model identifiers and settings are recorded in the resulting Inspect log. API keys and `.env` files are excluded from version control. To regenerate the readable report from the selected committed log:
+Model identifiers and settings are recorded in the resulting Inspect log. API keys and `.env` files are excluded from version control. To regenerate the static submission report from the selected committed log:
 
 ```bash
 uv run python -m property_content.live_report
 ```
 
-## View and read the submitted output
+## View and read results
 
-### Readable report
+### Committed submission report
 
 ```bash
 open artifacts/live-report.html
 ```
 
+This opens the existing committed snapshot. It does not select or render the latest run.
+
 For each property, expand **Show exact input JSON**, **Show description extraction and ingestion decisions**, **Show exact output JSON**, and **Show statement-by-statement evidence** to trace a claim from source input through its fact IDs to its final verdict.
 
-### Inspect AI log
+### Latest local run
+
+Every full notebook or CLI run writes a new timestamped `.eval` archive to `logs/main`; previous runs are not overwritten. Review the newest run interactively with:
+
+```bash
+uv run inspect view start --log-dir logs/main
+```
+
+Or create and open a static HTML report from the newest run:
+
+```bash
+uv run python -m property_content.live_report \
+  --log-dir logs/main \
+  --output artifacts/latest-report.html
+open artifacts/latest-report.html
+```
+
+The renderer selects the newest timestamped `.eval` in `logs/main` and overwrites only `artifacts/latest-report.html`. It does not make model calls or change the committed submission report.
+
+### Committed Inspect AI log
 
 ```bash
 uv run inspect view start --log-dir logs/final

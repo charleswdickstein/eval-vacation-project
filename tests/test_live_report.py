@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from property_content.live_report import (
+    _render_evidence,
     _render_listing,
     _render_quality,
     _status_badge,
@@ -62,6 +63,37 @@ def test_status_badge_reflects_the_recorded_result() -> None:
     assert ">PASS<" in _status_badge(True, "PASS", "FAIL")
     assert 'class="fail-badge"' in _status_badge(False, "PASS", "FAIL")
     assert ">FAIL<" in _status_badge(False, "PASS", "FAIL")
+
+
+def test_skipped_evaluations_render_as_not_evaluated() -> None:
+    content = {
+        "hero_headline": {"text": "Grounded headline", "fact_ids": ["fact.1"]},
+        "property_highlights": [],
+        "about_this_place": [],
+        "amenities_descriptions": [],
+    }
+    fact_index = {
+        "fact.1": {
+            "id": "fact.1",
+            "source": "structured",
+            "source_path": "property.name",
+            "text": "Grounded headline",
+        }
+    }
+    evidence = _render_evidence(
+        content,
+        fact_index,
+        {"semantic_grounding": "Skipped because a mandatory criterion failed."},
+    )
+    quality = _render_quality(
+        {"editorial_quality": "Skipped because grounding did not pass."}
+    )
+
+    assert "NOT EVALUATED" in evidence
+    assert "Skipped because a mandatory criterion failed." in evidence
+    assert ">SUPPORTED<" not in evidence
+    assert "NOT EVALUATED" in quality
+    assert "Skipped because grounding did not pass." in quality
 
 
 def test_direct_editorial_quality_renders_every_dimension() -> None:

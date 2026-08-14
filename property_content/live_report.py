@@ -239,14 +239,23 @@ def _render_evidence(
     explanation: dict[str, Any],
 ) -> str:
     semantic = explanation.get("semantic_grounding", {})
+    semantic_note = semantic if isinstance(semantic, str) else ""
+    semantic_items = semantic.get("statements", []) if isinstance(semantic, dict) else []
     decisions = {
         item["statement"]: item
-        for item in semantic.get("statements", [])
+        for item in semantic_items
         if isinstance(item, dict)
     }
     rows = []
     for section, statement in _statements(content):
-        decision = decisions.get(statement["text"], {})
+        decision = decisions.get(statement["text"])
+        if decision:
+            verdict = decision.get("verdict", "NOT EVALUATED")
+            badge = _status_badge(verdict == "SUPPORTED", verdict, verdict)
+            reason = decision.get("reason", "No reason recorded.")
+        else:
+            badge = '<span class="holdout">NOT EVALUATED</span>'
+            reason = semantic_note or "No semantic-grounding decision was recorded."
         facts = []
         for fact_id in statement["fact_ids"]:
             fact = fact_index.get(fact_id, {})
@@ -262,9 +271,9 @@ def _render_evidence(
             f"""
             <details class="statement-evidence">
               <summary><span><b>{_e(section)}</b>{_e(statement['text'])}</span>
-              <span class="pass">{_e(decision.get('verdict', 'SUPPORTED'))}</span></summary>
+              {badge}</summary>
               <ul class="fact-list">{''.join(facts)}</ul>
-              <p class="grader-reason">{_e(decision.get('reason', 'Supported by the cited facts.'))}</p>
+              <p class="grader-reason">{_e(reason)}</p>
             </details>
             """
         )
@@ -315,7 +324,15 @@ def _render_quality(explanation: dict[str, Any]) -> str:
         "guest_facing_language": "Guest-facing language",
         "publishability": "Publishability",
     }
-    if not isinstance(quality, dict) or "overall_verdict" not in quality:
+    if not isinstance(quality, dict):
+        note = quality if isinstance(quality, str) else "Not evaluated."
+        return f"""
+        <div class="quality">
+          <div class="quality-title"><span class="holdout">NOT EVALUATED</span><h4>Direct editorial rubric</h4></div>
+          <p>{_e(note)}</p>
+        </div>
+        """
+    if "overall_verdict" not in quality:
         return """
         <div class="quality">
           <div class="quality-title"><span class="holdout">NOT RECORDED</span><h4>Direct editorial rubric</h4></div>
@@ -465,10 +482,24 @@ def build_report(log_path: Path) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--log", type=Path, help="Inspect .eval log to render")
+    source = parser.add_mutually_exclusive_group()
+    source.add_argument("--log", type=Path, help="Inspect .eval log to render")
+    source.add_argument(
+        "--log-dir",
+        type=Path,
+        help="Directory whose newest timestamped .eval log should be rendered",
+    )
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()
-    log_path = args.log or _selected_log(DEFAULT_LOG_DIR)
+    if args.log:
+        log_path = args.log
+        if not log_path.is_absolute():
+            log_path = PROJECT_ROOT / log_path
+    else:
+        log_dir = args.log_dir or DEFAULT_LOG_DIR
+        if not log_dir.is_absolute():
+            log_dir = PROJECT_ROOT / log_dir
+        log_path = _selected_log(log_dir)
     output_path = args.output
     if not output_path.is_absolute():
         output_path = PROJECT_ROOT / output_path

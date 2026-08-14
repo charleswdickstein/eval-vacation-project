@@ -10,6 +10,7 @@ dist/
 build/
 logs/main/
 logs/.DS_Store
+artifacts/latest-report.html
 
 *.egg-info/
 
