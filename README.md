@@ -161,12 +161,27 @@ This writes `artifacts/offline-summary.json` using fakes and calibrated decision
 
 Python 3.13, `uv`, and an Anthropic API key are required. The task configures Anthropic Claude Sonnet 4.5 for both the generator and the separately named grader role, so only the key must be exported.
 
-### Jupyter notebook — primary entry point
+### Set the API key securely
 
-From the repository root:
+From the repository root, read the key without displaying it or storing it in shell history:
 
 ```bash
-export ANTHROPIC_API_KEY="..."
+read -s "ANTHROPIC_API_KEY?Anthropic API key: "
+echo
+export ANTHROPIC_API_KEY
+```
+
+Optionally confirm that it is set without printing its value:
+
+```bash
+[[ -n "$ANTHROPIC_API_KEY" ]] && echo "Key is set"
+```
+
+### Jupyter notebook — primary entry point
+
+Launch Jupyter from the same terminal so it inherits the key:
+
+```bash
 uv run jupyter lab evals.ipynb
 ```
 
@@ -174,11 +189,17 @@ Open `evals.ipynb` and select **Run → Run All Cells**. The notebook executes t
 
 ### CLI equivalent
 
-```bash
-export ANTHROPIC_API_KEY="..."
+Using the same terminal session:
 
+```bash
 PYTHONPATH=. uv run inspect eval property_content/inspect_task.py \
   --log-dir logs/main
+```
+
+When finished, remove the key from the shell session:
+
+```bash
+unset ANTHROPIC_API_KEY
 ```
 
 Model identifiers and settings are recorded in the resulting Inspect log. API keys and `.env` files are excluded from version control. To regenerate the readable report from the selected committed log:
