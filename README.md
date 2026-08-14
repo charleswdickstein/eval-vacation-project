@@ -157,9 +157,22 @@ uv run python -m property_content.offline_report
 
 This writes `artifacts/offline-summary.json` using fakes and calibrated decisions; it does not replace the recorded live evaluation.
 
-## Run a new live evaluation
+## Run the full pipeline and evaluation
 
-Python 3.13, `uv`, and an Anthropic API key are required. The generator and grader models are configured in the task, so only the key must be exported:
+Python 3.13, `uv`, and an Anthropic API key are required. The task configures Anthropic Claude Sonnet 4.5 for both the generator and the separately named grader role, so only the key must be exported.
+
+### Jupyter notebook — primary entry point
+
+From the repository root:
+
+```bash
+export ANTHROPIC_API_KEY="..."
+uv run jupyter lab evals.ipynb
+```
+
+Open `evals.ipynb` and select **Run → Run All Cells**. The notebook executes the real **ingestion / cleaning → generation → evaluation** pipeline across all four fixtures, writes a new Inspect archive to `logs/main`, and displays each raw input, fact catalog, generated listing, evaluation metrics, statement-level grounding verdicts, and editorial assessment. This is a live model run and may take several minutes.
+
+### CLI equivalent
 
 ```bash
 export ANTHROPIC_API_KEY="..."
@@ -168,9 +181,7 @@ PYTHONPATH=. uv run inspect eval property_content/inspect_task.py \
   --log-dir logs/main
 ```
 
-The task uses Anthropic Claude Sonnet 4.5 for both the generator and the separately named grader role. The model identifiers and settings are recorded in the resulting log. API keys and `.env` files are excluded from version control.
-
-After selecting a run, regenerate the readable report with:
+Model identifiers and settings are recorded in the resulting Inspect log. API keys and `.env` files are excluded from version control. To regenerate the readable report from the selected committed log:
 
 ```bash
 uv run python -m property_content.live_report
@@ -206,16 +217,6 @@ logs/final/2026-08-14T13-52-17-00-00_property-content-eval_Qw43aR4DDWr4pzMbh3fU8
 ```
 
 All four properties in this run passed description support, schema, structure, citations, numeric consistency, conflict handling, and 100% semantic grounding. Editorial quality passed for 2 of 4 properties; the two failures were section-differentiation issues and remain visible rather than being hidden.
-
-### Evaluation notebook
-
-From the repository root, launch the notebook:
-
-```bash
-uv run jupyter lab evals.ipynb
-```
-
-Open `evals.ipynb` and select **Run → Run All Cells**. The notebook recomputes the network-free control and reads the committed live Inspect log for interactive analysis. It requires no API key, makes no model calls, and does not create a new live log.
 
 ## Use of AI
 
